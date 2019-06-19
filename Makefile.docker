@@ -5,7 +5,7 @@ DOCKER ?= docker ${_DOCKER_ARGS}
 DOCKER_COMPOSE ?= docker-compose ${_COMPOSE_ARGS}
 DOCKER_COMPOSE_FILE ?= docker-compose.yml
 
-S ?=
+S ?= $(shell docker-compose ps --services)
 SERVICES ?= $(S)
 
 
@@ -23,9 +23,19 @@ build:
 
 clean: stop
 	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} rm $(SERVICES) ;\
+		${DOCKER_COMPOSE} rm --force $(SERVICES) ;\
 	else \
 		${DOCKER} rm ${CONTAINER_NAME} ;\
+	fi
+
+
+clean-images: clean
+	if test -f ${DOCKER_COMPOSE_FILE}; then \
+		for img in `docker-compose images -q`; do \
+			docker rmi $${img};\
+		done;\
+	else \
+		${DOCKER} rmi ${IMAGE_NAME}; \
 	fi
 
 
@@ -37,23 +47,20 @@ container: build
 	fi
 
 
-distclean:
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		images=`${DOCKER_COMPOSE} images -q $(SERVICES)`; \
-		$(MAKE) clean SERVERS="$(SERVICES)"; \
-		test -z "$${images}" || ${DOCKER} rmi $${images}; \
-	else \
-			${DOCKER} rmi ${IMAGE_NAME}; \
-	fi
-
-
-
 exec:
 	${DOCKER_COMPOSE} exec $(SERVICES)
 
 
 logs:
 	${DOCKER_COMPOSE} logs --tail 256 -f $(SERVICES)
+
+
+show-services:
+	@if test -f ${DOCKER_COMPOSE_FILE}; then \
+		docker-compose ps --services ;\
+	else \
+		echo "TODO"; false ;\
+	fi
 
 
 start: container
@@ -90,10 +97,16 @@ stop:
 
 rebuild:
 	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} build --no-cache $(SERVICES); \
+		${DOCKER_COMPOSE} build --force-rm --pull --no-cache $(SERVICES); \
 	else \
 		${MAKE} _BUILD_ARGS="--no-cache --pull" build; \
 	fi
 
 
 restart: stop start
+
+
+# Help targets
+docker-help:
+	echo "TODO"
+	echo "FIXME"
