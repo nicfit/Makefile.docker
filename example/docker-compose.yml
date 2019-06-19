@@ -1,0 +1,5 @@
+version: "3"
+services:
+  nicfit-arch:
+    image: nicfit/archlinux:latest
+    container_name: nicfit-archlinux
