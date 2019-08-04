@@ -1,112 +1,69 @@
-_DOCKER_ARGS =
-_COMPOSE_ARGS =
+_COMPOSE ?= docker-compose
+_COMPOSE_ARGS ?=
+_COMPOSE_BUILD_ARGS ?=
 
-DOCKER ?= docker ${_DOCKER_ARGS}
-DOCKER_COMPOSE ?= docker-compose ${_COMPOSE_ARGS}
+DOCKER_COMPOSE ?= ${_COMPOSE} ${_COMPOSE_ARGS}
 DOCKER_COMPOSE_FILE ?= docker-compose.yml
 
-S ?= $(shell docker-compose ps --services)
+S ?= $(shell ${DOCKER_COMPOSE} ps --services)
 SERVICES ?= $(S)
 
-
+default: build
 all: build
 
 
-_BUILD_ARGS ?=
 build:
-	@if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} build $(SERVICES) ;\
-	else \
-		${DOCKER} build --tag ${FQ_IMAGE_NAME} ${_BUILD_ARGS} . ;\
-	fi
+	${DOCKER_COMPOSE} build ${_COMPOSE_BUILD_ARGS} $(SERVICES)
 
 
 clean: stop
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} rm --force $(SERVICES) ;\
-	else \
-		${DOCKER} rm ${CONTAINER_NAME} ;\
-	fi
+	# Note, -v only removes anonymous volumes; not named volumes
+	${DOCKER_COMPOSE} rm --force -v $(SERVICES)
+
+clean-all: clean-images clean-docker
 
 
 clean-images: clean
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		for img in `docker-compose images -q`; do \
-			docker rmi $${img};\
-		done;\
-	else \
-		${DOCKER} rmi ${IMAGE_NAME}; \
-	fi
+	${DOCKER_COMPOSE} down --rmi local
+
+
+clean-volumes:
+	${DOCKER_COMPOSE} down --volumes
 
 
 container: build
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} up --no-start --remove-orphans $(SERVICES) ;\
-	else \
-		${DOCKER} create --name ${CONTAINER_NAME} ${IMAGE_NAME} ;\
-	fi
-
-
-exec:
-	${DOCKER_COMPOSE} exec $(SERVICES)
+	${DOCKER_COMPOSE} up --no-start --remove-orphans $(SERVICES)
 
 
 logs:
 	${DOCKER_COMPOSE} logs --tail 256 -f $(SERVICES)
 
 
-show-services:
-	@if test -f ${DOCKER_COMPOSE_FILE}; then \
-		docker-compose ps --services ;\
-	else \
-		echo "TODO"; false ;\
-	fi
-
-
-start: container
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} up -d $(SERVICES); \
-	else \
-		${DOCKER} start ${CONTAINER_NAME}; \
-	fi
-
-
-start-interactive: container
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} up $(SERVICES); \
-	else \
-		${DOCKER} run -it --rm ${IMAGE_NAME} bash ;\
-	fi
-
-
-status:
-	@if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} ps $(SERVICES); \
-	else \
-		${DOCKER} ps -a | grep ${CONTAINER_NAME} || true; \
-	fi
-
-
-stop:
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} stop $(SERVICES); \
-	else \
-		${DOCKER} stop ${CONTAINER_NAME}; \
-	fi
+ps:
+	${DOCKER_COMPOSE} ps $(SERVICES)
 
 
 rebuild:
-	if test -f ${DOCKER_COMPOSE_FILE}; then \
-		${DOCKER_COMPOSE} build --force-rm --pull --no-cache $(SERVICES); \
-	else \
-		${MAKE} _BUILD_ARGS="--no-cache --pull" build; \
-	fi
+	${DOCKER_COMPOSE} build --force-rm --pull --no-cache $(SERVICES)
 
 
 restart: stop start
 
 
-# Help targets
-docker-help:
-	echo "TODO"
-	echo "FIXME"
+show-services:
+	${DOCKER_COMPOSE} ps --services
+
+
+start: container
+	${DOCKER_COMPOSE} up -d $(SERVICES)
+
+
+start-interactive: container
+	${DOCKER_COMPOSE} up $(SERVICES)
+
+
+status: ps
+
+
+stop:
+	${DOCKER_COMPOSE} stop $(SERVICES)
