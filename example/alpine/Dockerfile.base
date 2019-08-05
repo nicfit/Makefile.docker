@@ -1,0 +1,8 @@
+FROM alpine:latest
+MAINTAINER <nicfit@gmail.com>
+
+ENV LANG en_US.UTF-8
+
+ONBUILD RUN apk update &&\
+            apk upgrade &&\
+            apk add --no-cache ca-certificates sudo bash vim

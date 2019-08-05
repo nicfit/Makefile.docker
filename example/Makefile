@@ -1,8 +1,6 @@
 Makefile.docker:
-	ln ../Makefile.docker
-include ./Makefile.docker
+	ln -s ../Makefile.docker
 
-all: build
-
-bash:
-	docker-compose exec nicfit-arch bash
+build: Makefile.docker
+	${MAKE} -C ./alpine build
+	${MAKE} -C ./archlinux build

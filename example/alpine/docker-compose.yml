@@ -1,0 +1,31 @@
+version: "3"
+services:
+  nicfit-alpine-base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: nicfit/alpine-base:latest
+
+  nicfit-alpine-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    image: nicfit/alpine-python:latest
+
+  nicfit-alpine-java:
+    build:
+      context: .
+      dockerfile: Dockerfile.java
+    image: nicfit/alpine-java:latest
+
+  nicfit-alpine-devel:
+    build:
+      context: .
+      dockerfile: Dockerfile.devel
+    image: nicfit/alpine-devel:latest
+
+  nicfit-alpine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nicfit/alpine:latest

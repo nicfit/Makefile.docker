@@ -1,0 +1,31 @@
+version: "3"
+services:
+  nicfit-archlinux-base:
+    build:
+      context: .
+      dockerfile: Dockerfile.base
+    image: nicfit/archlinux-base:latest
+
+  nicfit-archlinux-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    image: nicfit/archlinux-python:latest
+
+  nicfit-archlinux-java:
+    build:
+      context: .
+      dockerfile: Dockerfile.java
+    image: nicfit/archlinux-java:latest
+
+  nicfit-archlinux-devel:
+    build:
+      context: .
+      dockerfile: Dockerfile.devel
+    image: nicfit/archlinux-devel:latest
+
+  nicfit-archlinux:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nicfit/archlinux:latest

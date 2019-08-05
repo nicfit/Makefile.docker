@@ -20,14 +20,14 @@ clean: stop
 	# Note, -v only removes anonymous volumes; not named volumes
 	${DOCKER_COMPOSE} rm --force -v $(SERVICES)
 
-clean-all: clean-images clean-docker
+clean-all: clean-images clean-volumes
 
 
 clean-images: clean
-	${DOCKER_COMPOSE} down --rmi local
+	${DOCKER_COMPOSE} down --rmi all
 
 
-clean-volumes:
+clean-volumes: clean
 	${DOCKER_COMPOSE} down --volumes
 
 

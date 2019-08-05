@@ -1,0 +1,7 @@
+FROM nicfit/alpine-base:latest
+MAINTAINER <nicfit@gmail.com>
+
+RUN apk add --no-cache build-base git \
+                       python3 \
+                       openjdk8
+

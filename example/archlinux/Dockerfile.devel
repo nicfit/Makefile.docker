@@ -1,0 +1,8 @@
+FROM nicfit/archlinux-base:latest
+MAINTAINER <nicfit@gmail.com>
+
+RUN pacman -Syu --noconfirm --needed \
+                base-devel git \
+                python python-pip \
+                jdk-openjdk
+
