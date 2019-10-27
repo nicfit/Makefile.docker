@@ -1,0 +1,5 @@
+
+::
+
+    cd examples
+    make Makefile.docker build
