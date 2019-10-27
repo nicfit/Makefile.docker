@@ -1,8 +1,11 @@
+VERSION ?= latest
+
+_MAKEFILE_VERSION = 0.5
 _COMPOSE ?= docker-compose
 _COMPOSE_ARGS ?=
 _COMPOSE_BUILD_ARGS ?=
 
-DOCKER_COMPOSE ?= ${_COMPOSE} ${_COMPOSE_ARGS}
+DOCKER_COMPOSE := VERSION=${VERSION} ${_COMPOSE} ${_COMPOSE_ARGS}
 DOCKER_COMPOSE_FILE ?= docker-compose.yml
 
 S ?= $(shell ${DOCKER_COMPOSE} ps --services)
@@ -48,6 +51,10 @@ rebuild:
 
 
 restart: stop start
+
+
+show-images:
+	${DOCKER_COMPOSE} images
 
 
 show-services:
