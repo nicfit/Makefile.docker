@@ -1,4 +1,4 @@
-FROM nicfit/archlinux-base:latest
+FROM nicfit/archlinux-base:local
 MAINTAINER <nicfit@gmail.com>
 
 RUN pacman -Syu --noconfirm --needed \

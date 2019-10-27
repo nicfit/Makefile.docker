@@ -1,4 +1,4 @@
-FROM nicfit/alpine-devel:latest
+FROM nicfit/alpine-devel:local
 MAINTAINER <nicfit@gmail.com>
 
 

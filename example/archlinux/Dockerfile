@@ -1,5 +1,3 @@
-FROM nicfit/archlinux-python:latest
-
-#RUN pacman -S --noconfirm --needed reflector
+FROM nicfit/archlinux-python:local
 
 CMD ["tail", "-F", "/dev/null"]

@@ -7,7 +7,12 @@ RUN locale-gen
 
 COPY bootstrap/mirrorlist /etc/pacman.d/
 
-ONBUILD RUN pacman-key --init && \
-            pacman-key --populate archlinux && \
-            pacman -Syu --noconfirm && \
-            pacman -S --noconfirm --needed ca-certificates sudo vim
+RUN pacman-key --init && \
+    pacman-key --populate archlinux && \
+    pacman -Sy && \
+    pacman -S --noconfirm --needed ca-certificates \
+                                   reflector \
+                                   sudo vim
+
+ONBUILD RUN reflector >| /etc/mirrorlist && \
+            pacman -Syu --noconfirm
