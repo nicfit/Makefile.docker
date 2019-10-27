@@ -1,76 +1,86 @@
-VERSION ?= latest
+_DEFAULT_VERSION = local
+VERSION ?= ${_DEFAULT_VERSION}
+DOCKER_COMPOSE_FILE ?= docker-compose.yml
 
-_MAKEFILE_VERSION = 0.5
+_MAKEFILE_DOCKER_VERSION = 0.5
 _COMPOSE ?= docker-compose
 _COMPOSE_ARGS ?=
 _COMPOSE_BUILD_ARGS ?=
+_COMPOSE_ARGS +=-f $(DOCKER_COMPOSE_FILE)
 
-DOCKER_COMPOSE := VERSION=${VERSION} ${_COMPOSE} ${_COMPOSE_ARGS}
-DOCKER_COMPOSE_FILE ?= docker-compose.yml
+DOCKER_COMPOSE :=VERSION=${VERSION} ${_COMPOSE} ${_COMPOSE_ARGS}
 
 S ?= $(shell ${DOCKER_COMPOSE} ps --services)
 SERVICES ?= $(S)
 
+
 default: build
-all: build
-
-
 build:
-	${DOCKER_COMPOSE} build ${_COMPOSE_BUILD_ARGS} $(SERVICES)
+	@${DOCKER_COMPOSE} build ${_COMPOSE_BUILD_ARGS} $(SERVICES)
 
 
 clean: stop
 	# Note, -v only removes anonymous volumes; not named volumes
-	${DOCKER_COMPOSE} rm --force -v $(SERVICES)
+	@${DOCKER_COMPOSE} rm --force -v $(SERVICES)
+
 
 clean-all: clean-images clean-volumes
 
 
 clean-images: clean
-	${DOCKER_COMPOSE} down --rmi all
+	@${DOCKER_COMPOSE} down --rmi all
 
 
 clean-volumes: clean
-	${DOCKER_COMPOSE} down --volumes
+	@${DOCKER_COMPOSE} down --volumes
 
 
 container: build
-	${DOCKER_COMPOSE} up --no-start --remove-orphans $(SERVICES)
+	@${DOCKER_COMPOSE} up --no-start --remove-orphans $(SERVICES)
 
 
 logs:
-	${DOCKER_COMPOSE} logs --tail 256 -f $(SERVICES)
+	@${DOCKER_COMPOSE} logs --tail 256 -f $(SERVICES)
 
 
 ps:
-	${DOCKER_COMPOSE} ps $(SERVICES)
+	@${DOCKER_COMPOSE} ps $(SERVICES)
 
 
 rebuild:
-	${DOCKER_COMPOSE} build --force-rm --pull --no-cache $(SERVICES)
+	@${DOCKER_COMPOSE} build --force-rm --pull --no-cache $(SERVICES)
 
 
 restart: stop start
 
 
+show-debug:
+	@printf "DOCKER_COMPOSE command:\n  $(DOCKER_COMPOSE)\n"
+
+
 show-images:
-	${DOCKER_COMPOSE} images
+	@${DOCKER_COMPOSE} images
 
 
 show-services:
-	${DOCKER_COMPOSE} ps --services
+	@${DOCKER_COMPOSE} ps --services
 
 
 start: container
-	${DOCKER_COMPOSE} up -d $(SERVICES)
+	@${DOCKER_COMPOSE} up -d $(SERVICES)
 
 
 start-interactive: container
-	${DOCKER_COMPOSE} up $(SERVICES)
+	@${DOCKER_COMPOSE} up $(SERVICES)
 
 
 status: ps
 
 
 stop:
-	${DOCKER_COMPOSE} stop $(SERVICES)
+	@${DOCKER_COMPOSE} stop $(SERVICES)
+
+
+_check-version-nonlocal:
+	@test "${VERSION}" != local || \
+	 	(echo "VERSION=local not allowed for publish" && false)
