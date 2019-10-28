@@ -1,4 +1,5 @@
-FROM nicfit/alpine-devel:local
+ARG VERSION=local
+FROM nicfit/alpine-devel:${VERSION}
 MAINTAINER <nicfit@gmail.com>
 
 

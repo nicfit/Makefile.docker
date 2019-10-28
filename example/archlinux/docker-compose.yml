@@ -11,22 +11,30 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.python
+      args:
+        VERSION: ${VERSION}
     image: nicfit/archlinux-python:${VERSION}
 
   nicfit-archlinux-java:
     build:
       context: .
       dockerfile: Dockerfile.java
+      args:
+        VERSION: ${VERSION}
     image: nicfit/archlinux-java:${VERSION}
 
   nicfit-archlinux-devel:
     build:
       context: .
       dockerfile: Dockerfile.devel
+      args:
+        VERSION: ${VERSION}
     image: nicfit/archlinux-devel:${VERSION}
 
   nicfit-archlinux:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VERSION: ${VERSION}
     image: nicfit/archlinux:${VERSION}

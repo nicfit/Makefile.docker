@@ -10,22 +10,30 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.python
+      args:
+        VERSION: ${VERSION}
     image: nicfit/alpine-python:${VERSION}
 
   nicfit-alpine-java:
     build:
       context: .
       dockerfile: Dockerfile.java
+      args:
+        VERSION: ${VERSION}
     image: nicfit/alpine-java:${VERSION}
 
   nicfit-alpine-devel:
     build:
       context: .
       dockerfile: Dockerfile.devel
+      args:
+        VERSION: ${VERSION}
     image: nicfit/alpine-devel:${VERSION}
 
   nicfit-alpine:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VERSION: ${VERSION}
     image: nicfit/alpine:${VERSION}
