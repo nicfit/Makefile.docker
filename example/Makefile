@@ -1,4 +1,4 @@
-VERSION ?= local
+TAG ?= local
 
 all: Makefile.docker build
 
@@ -8,14 +8,14 @@ Makefile.docker:
 build: Makefile.docker alpine arch
 
 alpine:
-	${MAKE} -C ./alpine VERSION=${VERSION} build
+	${MAKE} -C ./alpine TAG=${TAG} build
 
 arch:
-	${MAKE} -C ./archlinux VERSION=${VERSION} build
+	${MAKE} -C ./archlinux TAG=${TAG} build
 
 
 publish:
-	${MAKE} -C ./alpine VERSION=${VERSION} publish
-	${MAKE} -C ./archlinux VERSION=${VERSION} publish
+	${MAKE} -C ./alpine TAG=${TAG} publish
+	${MAKE} -C ./archlinux TAG=${TAG} publish
 
 .PHONY: all build alpine arch publish

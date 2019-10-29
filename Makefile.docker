@@ -1,5 +1,5 @@
-_DEFAULT_VERSION = local
-VERSION ?= ${_DEFAULT_VERSION}
+_DEFAULT_TAG = local
+TAG ?= ${_DEFAULT_TAG}
 DOCKER_COMPOSE_FILE ?= docker-compose.yml
 
 _MAKEFILE_DOCKER_VERSION = 0.5
@@ -8,7 +8,7 @@ _COMPOSE_ARGS ?=
 _COMPOSE_BUILD_ARGS ?=
 _COMPOSE_ARGS +=-f $(DOCKER_COMPOSE_FILE)
 
-DOCKER_COMPOSE :=VERSION=${VERSION} ${_COMPOSE} ${_COMPOSE_ARGS}
+DOCKER_COMPOSE :=TAG=${TAG} ${_COMPOSE} ${_COMPOSE_ARGS}
 
 S ?= $(shell ${DOCKER_COMPOSE} ps --services)
 SERVICES ?= $(S)
@@ -82,5 +82,5 @@ stop:
 
 
 _check-version-nonlocal:
-	@test "${VERSION}" != local || \
-	 	(echo "VERSION=local not allowed for publish" && false)
+	@test "${TAG}" != local || \
+	 	(echo "TAG=local not allowed for publish" && false)

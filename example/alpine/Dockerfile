@@ -1,5 +1,5 @@
-ARG VERSION=local
-FROM nicfit/alpine-devel:${VERSION}
+ARG TAG=local
+FROM nicfit/alpine-devel:${TAG}
 MAINTAINER <nicfit@gmail.com>
 
 

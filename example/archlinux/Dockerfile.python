@@ -1,5 +1,5 @@
-ARG VERSION=local
-FROM nicfit/archlinux-base:${VERSION}
+ARG TAG=local
+FROM nicfit/archlinux-base:${TAG}
 MAINTAINER <nicfit@gmail.com>
 
 RUN pacman -Syu --noconfirm --needed \

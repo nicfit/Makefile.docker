@@ -4,36 +4,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    image: nicfit/alpine-base:${VERSION}
+    image: nicfit/alpine-base:${TAG}
 
   nicfit-alpine-python:
     build:
       context: .
       dockerfile: Dockerfile.python
       args:
-        VERSION: ${VERSION}
-    image: nicfit/alpine-python:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/alpine-python:${TAG}
 
   nicfit-alpine-java:
     build:
       context: .
       dockerfile: Dockerfile.java
       args:
-        VERSION: ${VERSION}
-    image: nicfit/alpine-java:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/alpine-java:${TAG}
 
   nicfit-alpine-devel:
     build:
       context: .
       dockerfile: Dockerfile.devel
       args:
-        VERSION: ${VERSION}
-    image: nicfit/alpine-devel:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/alpine-devel:${TAG}
 
   nicfit-alpine:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        VERSION: ${VERSION}
-    image: nicfit/alpine:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/alpine:${TAG}

@@ -5,36 +5,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.base
-    image: nicfit/archlinux-base:${VERSION}
+    image: nicfit/archlinux-base:${TAG}
 
   nicfit-archlinux-python:
     build:
       context: .
       dockerfile: Dockerfile.python
       args:
-        VERSION: ${VERSION}
-    image: nicfit/archlinux-python:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/archlinux-python:${TAG}
 
   nicfit-archlinux-java:
     build:
       context: .
       dockerfile: Dockerfile.java
       args:
-        VERSION: ${VERSION}
-    image: nicfit/archlinux-java:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/archlinux-java:${TAG}
 
   nicfit-archlinux-devel:
     build:
       context: .
       dockerfile: Dockerfile.devel
       args:
-        VERSION: ${VERSION}
-    image: nicfit/archlinux-devel:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/archlinux-devel:${TAG}
 
   nicfit-archlinux:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        VERSION: ${VERSION}
-    image: nicfit/archlinux:${VERSION}
+        TAG: ${TAG}
+    image: nicfit/archlinux:${TAG}
