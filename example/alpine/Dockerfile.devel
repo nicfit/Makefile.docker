@@ -2,7 +2,12 @@ ARG TAG=local
 FROM nicfit/alpine-base:${TAG}
 MAINTAINER <nicfit@gmail.com>
 
-RUN apk add --no-cache build-base git \
-                       python3 \
-                       openjdk8
+RUN apk add --no-cache autoconf \
+                       automake \
+                       build-base \
+                       git \
+                       libtool \
+                       linux-headers \
+                       openjdk8 \
+                       python3
 

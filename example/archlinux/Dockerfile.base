@@ -11,8 +11,10 @@ RUN pacman-key --init && \
     pacman-key --populate archlinux && \
     pacman -Sy && \
     pacman -S --noconfirm --needed ca-certificates \
-                                   sudo vim procps-ng \
-                                   reflector
+                                   procps-ng \
+                                   reflector \
+                                   sudo \
+                                   vim
 
 ONBUILD RUN reflector >| /etc/mirrorlist && \
             pacman -Syu --noconfirm
